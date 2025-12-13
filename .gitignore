@@ -1,0 +1,56 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+# Libraries should not include pubspec.lock, per https://dart.dev/guides/libraries/private-files#pubspeclock.
+/pubspec.lock
+**/doc/api/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+
+# Claude Code related
+CLAUDE.md
+.claude/
+
+# Project specific
+doc/
+scripts/
+# Static libraries (download from release)
+ios/static_libs/*.a
+!ios/static_libs/.gitkeep
+
+# Build artifacts
+build_ios/
+
+# Large frameworks (download from release or build locally)
+ios/Frameworks/opencv2.framework/
+ios/Frameworks/onnxruntime.xcframework/
+
+# Large model files (download separately)
+models/
+example/assets/*.onnx
+example/assets/ppocr_keys_v1.txt
