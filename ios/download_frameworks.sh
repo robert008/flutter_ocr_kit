@@ -6,7 +6,6 @@ BASE_URL="https://github.com/robert008/flutter_ocr_kit/releases/download/${VERSI
 
 # Check if frameworks already exist
 OPENCV_DIR="$SCRIPT_DIR/Frameworks/opencv2.framework"
-ONNX_DIR="$SCRIPT_DIR/Frameworks/onnxruntime.xcframework"
 STATIC_LIBS_DIR="$SCRIPT_DIR/static_libs"
 
 download_file() {
@@ -38,22 +37,6 @@ if [ ! -d "$OPENCV_DIR" ]; then
     fi
 else
     echo "opencv2.framework already exists"
-fi
-
-# Download and extract onnxruntime.xcframework
-if [ ! -d "$ONNX_DIR" ]; then
-    echo "Downloading onnxruntime.xcframework..."
-    ONNX_ZIP="$SCRIPT_DIR/onnxruntime.xcframework.zip"
-    download_file "${BASE_URL}/onnxruntime.xcframework.zip" "$ONNX_ZIP"
-
-    if [ -f "$ONNX_ZIP" ]; then
-        mkdir -p "$SCRIPT_DIR/Frameworks"
-        unzip -q -o "$ONNX_ZIP" -d "$SCRIPT_DIR/Frameworks/"
-        rm -f "$ONNX_ZIP"
-        echo "onnxruntime.xcframework extracted successfully"
-    fi
-else
-    echo "onnxruntime.xcframework already exists"
 fi
 
 # Download and extract static_libs
