@@ -81,7 +81,12 @@ final layout = OcrKit.detectLayout('/path/to/document.jpg');
 for (final region in layout.detections) {
   print('${region.className}: (${region.x1}, ${region.y1}) - (${region.x2}, ${region.y2})');
 }
+
+// Release model when done to free memory
+OcrKit.releaseLayout();
 ```
+
+> **Note (iOS)**: Layout detection uses Core ML Execution Provider for faster inference, but consumes more memory (~1.5GB). Always call `OcrKit.releaseLayout()` when you no longer need layout detection to free memory.
 
 Supported layout classes: `Text`, `Title`, `Figure`, `Figure caption`, `Table`, `Table caption`, `Header`, `Footer`, `Reference`, `Equation`
 
