@@ -1,13 +1,19 @@
 Pod::Spec.new do |s|
   s.name             = 'flutter_ocr_kit'
-  s.version          = '0.0.1'
-  s.summary          = 'OCR plugin for Flutter using ONNX model with Core ML acceleration'
-  s.homepage         = 'https://github.com/example/flutter_ocr_kit'
+  s.version          = '1.0.0'
+  s.summary          = 'OCR plugin for Flutter using ONNX Runtime and Apple Vision'
+  s.homepage         = 'https://github.com/robert008/flutter_ocr_kit'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'robert' => 'figo007007@gmail.com' }
   s.source           = { :path => '.' }
 
   s.source_files = 'Classes/**/*.{h,m}'
+  s.preserve_paths = 'download_frameworks.sh'
+
+  # Download frameworks before build
+  s.prepare_command = <<-CMD
+    ./download_frameworks.sh
+  CMD
 
   # Static libraries: user code + ONNX Runtime (separate from OpenCV to avoid protobuf conflict)
   s.vendored_libraries = 'libflutter_ocr_kit.a', 'static_libs/libonnxruntime_complete.a'
