@@ -18,7 +18,7 @@ A Flutter FFI plugin for OCR (Optical Character Recognition) with Edge AI suppor
 
 ## Installation
 
-Add this to your `pubspec.yaml`:
+### 1. Add Dependency
 
 ```yaml
 dependencies:
@@ -26,6 +26,32 @@ dependencies:
     git:
       url: https://github.com/robert008/flutter_ocr_kit.git
 ```
+
+### 2. Download AI Model
+
+Download the ONNX model from [GitHub Releases](https://github.com/robert008/flutter_ocr_kit/releases):
+
+| Model | Size | Description |
+|-------|------|-------------|
+| pp_doclayout_l.onnx | 123 MB | Layout detection model |
+
+**Steps:**
+
+1. Create `assets/` folder in your project root
+2. Download the model file and place it in `assets/`
+3. Register in `pubspec.yaml`:
+
+```yaml
+flutter:
+  assets:
+    - assets/pp_doclayout_l.onnx
+```
+
+### 3. Platform Setup
+
+**iOS**: Run `pod install` in your iOS directory. The native libraries will be downloaded automatically.
+
+**Android**: The native libraries are bundled with the package.
 
 ## Quick Start
 

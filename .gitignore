@@ -45,6 +45,7 @@ ios/static_libs/*.a
 
 # Build artifacts
 build_ios/
+release_assets/
 
 # Large frameworks (download from release or build locally)
 ios/Frameworks/opencv2.framework/
