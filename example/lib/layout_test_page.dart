@@ -56,9 +56,8 @@ class _LayoutTestPageState extends State<LayoutTestPage> {
   final ImagePicker _picker = ImagePicker();
 
   // Model selection
-  String _selectedModel = 'pp_doclayout_m.onnx'; // Default to Medium
+  String _selectedModel = 'pp_doclayout_l.onnx';
   final List<String> _availableModels = [
-    'pp_doclayout_m.onnx',
     'pp_doclayout_l.onnx',
   ];
 
