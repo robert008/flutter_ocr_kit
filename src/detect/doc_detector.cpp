@@ -21,6 +21,23 @@ static Ort::SessionOptions* g_session_options = nullptr;
 static Ort::Session* g_session = nullptr;
 static bool g_initialized = false;
 
+void releaseLayoutSession() {
+    if (g_session) {
+        delete g_session;
+        g_session = nullptr;
+    }
+    if (g_session_options) {
+        delete g_session_options;
+        g_session_options = nullptr;
+    }
+    if (g_env) {
+        delete g_env;
+        g_env = nullptr;
+    }
+    g_initialized = false;
+    LOGD("Layout session released");
+}
+
 void initOnnxSession() {
     if (g_initialized) {
         LOGD("Session already initialized, skipping");

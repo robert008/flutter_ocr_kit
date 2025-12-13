@@ -26,6 +26,16 @@ class OcrKitBindings {
   late final _initModel =
       _initModelPtr.asFunction<void Function(ffi.Pointer<ffi.Char>)>();
 
+  /// Release layout model resources
+  void releaseLayoutModel() {
+    return _releaseLayoutModel();
+  }
+
+  late final _releaseLayoutModelPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>('releaseLayoutModel');
+  late final _releaseLayoutModel =
+      _releaseLayoutModelPtr.asFunction<void Function()>();
+
   /// Detect layout from image file path
   ffi.Pointer<ffi.Char> detectLayout(
       ffi.Pointer<ffi.Char> imgPath, double confThreshold) {

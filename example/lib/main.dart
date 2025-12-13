@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ocr_kit/flutter_ocr_kit.dart';
 
 import 'tabs/ocr_tab.dart';
 import 'tabs/kie_tab.dart';
@@ -33,14 +34,31 @@ class _HomePageState extends State<HomePage>
   late TabController _tabController;
   final TextEditingController _searchController = TextEditingController();
 
+  int _previousTabIndex = 0;
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
+    _tabController.addListener(_onTabChanged);
+  }
+
+  void _onTabChanged() {
+    if (_tabController.indexIsChanging) return;
+
+    final currentIndex = _tabController.index;
+
+    // Release layout model when leaving Quotation tab (index 3)
+    if (_previousTabIndex == 3 && currentIndex != 3) {
+      OcrKit.releaseLayout();
+    }
+
+    _previousTabIndex = currentIndex;
   }
 
   @override
   void dispose() {
+    _tabController.removeListener(_onTabChanged);
     _tabController.dispose();
     _searchController.dispose();
     super.dispose();

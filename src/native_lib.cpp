@@ -27,6 +27,13 @@ void initModel(const char* model_path) {
     LOGI("Model initialized: %s\n", model_path);
 }
 
+// Release layout model resources
+extern "C" __attribute__((visibility("default")))
+void releaseLayoutModel() {
+    releaseLayoutSession();
+    LOGI("Layout model released\n");
+}
+
 // Detect layout from image path
 extern "C" __attribute__((visibility("default")))
 char* detectLayout(const char* img_path, float conf_threshold) {

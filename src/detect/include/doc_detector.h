@@ -44,6 +44,9 @@ const std::vector<std::string> DOC_CLASSES = {
 // Main detection function
 std::vector<DetectionBox> detectDocLayout(const cv::Mat& image, float conf_threshold = 0.5);
 
+// Release ONNX session resources
+void releaseLayoutSession();
+
 // Convert detections to JSON string
 std::string detectionsToJson(const std::vector<DetectionBox>& detections);
 

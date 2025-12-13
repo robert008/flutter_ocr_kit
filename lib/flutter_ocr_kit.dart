@@ -92,6 +92,17 @@ class OcrKit {
     _isLayoutInitialized = true;
   }
 
+  /// Release layout detection model resources
+  ///
+  /// Call this when you no longer need layout detection to free memory.
+  /// You can call init() again later to reinitialize.
+  static void releaseLayout() {
+    if (_isLayoutInitialized) {
+      _native.releaseLayoutModel();
+      _isLayoutInitialized = false;
+    }
+  }
+
   /// Detect layout from image file
   static LayoutResult detectLayout(
     String imagePath, {
