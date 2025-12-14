@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
+
 import 'models.dart';
 
 /// Quotation item from table
@@ -352,8 +354,8 @@ class QuotationExtractor {
 
     // Debug: print table rect and all texts
     if (tableRect != null) {
-      print('[QuotationExtractor] Table rect: $tableRect');
-      print('[QuotationExtractor] Texts in table: ${tableTexts.length}');
+      debugPrint('[QuotationExtractor] Table rect: $tableRect');
+      debugPrint('[QuotationExtractor] Texts in table: ${tableTexts.length}');
     }
 
     // Find product names - they usually contain Chinese + code pattern
@@ -394,13 +396,13 @@ class QuotationExtractor {
 
       if (hasChineseAndCode) {
         productTexts.add(text);
-        print('[QuotationExtractor] Found product: "${text.text}" at y=${text.y1.toInt()}');
+        debugPrint('[QuotationExtractor] Found product: "${text.text}" at y=${text.y1.toInt()}');
       }
     }
 
     // Sort by Y position
     productTexts.sort((a, b) => a.y1.compareTo(b.y1));
-    print('[QuotationExtractor] Total products found: ${productTexts.length}');
+    debugPrint('[QuotationExtractor] Total products found: ${productTexts.length}');
 
     // For each product, find other texts on the same row
     int itemIndex = 1;
@@ -482,7 +484,7 @@ class QuotationExtractor {
         }
       }
 
-      print('[QuotationExtractor] Item $itemIndex: $name, qty=$quantity, price=$unitPrice, amount=$amount');
+      debugPrint('[QuotationExtractor] Item $itemIndex: $name, qty=$quantity, price=$unitPrice, amount=$amount');
 
       if (name.isNotEmpty && amount > 0) {
         items.add(QuotationItem(
@@ -526,19 +528,19 @@ class QuotationExtractor {
         final price = _findNearbyPrice(sortedTexts, i);
         if (price != null && price > 100) {
           candidates['total']!.add((price, y));
-          print('[QuotationExtractor] Found total candidate: $price from "${sortedTexts[i].text}"');
+          debugPrint('[QuotationExtractor] Found total candidate: $price from "${sortedTexts[i].text}"');
         }
       } else if (t.contains('小計')) {
         final price = _findNearbyPrice(sortedTexts, i);
         if (price != null && price > 100) {
           candidates['subtotal']!.add((price, y));
-          print('[QuotationExtractor] Found subtotal candidate: $price from "${sortedTexts[i].text}"');
+          debugPrint('[QuotationExtractor] Found subtotal candidate: $price from "${sortedTexts[i].text}"');
         }
       } else if (t.contains('稅額') || t.contains('營業稅')) {
         final price = _findNearbyPrice(sortedTexts, i);
         if (price != null) {
           candidates['tax']!.add((price, y));
-          print('[QuotationExtractor] Found tax candidate: $price from "${sortedTexts[i].text}"');
+          debugPrint('[QuotationExtractor] Found tax candidate: $price from "${sortedTexts[i].text}"');
         }
       }
     }
@@ -565,7 +567,7 @@ class QuotationExtractor {
       }
     }
 
-    print('[QuotationExtractor] Final: subtotal=$subtotal, tax=$tax, total=$total');
+    debugPrint('[QuotationExtractor] Final: subtotal=$subtotal, tax=$tax, total=$total');
 
     // If total not found but subtotal exists, calculate total
     if (total == null && subtotal != null) {
@@ -574,7 +576,7 @@ class QuotationExtractor {
       } else {
         total = subtotal;
       }
-      print('[QuotationExtractor] Calculated total: $total');
+      debugPrint('[QuotationExtractor] Calculated total: $total');
     }
 
     // If still no total, find the largest price
@@ -590,7 +592,7 @@ class QuotationExtractor {
       }
       if (maxPrice > 0) {
         total = maxPrice;
-        print('[QuotationExtractor] Fallback total (max price): $total');
+        debugPrint('[QuotationExtractor] Fallback total (max price): $total');
       }
     }
 

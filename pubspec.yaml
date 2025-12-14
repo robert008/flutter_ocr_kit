@@ -1,9 +1,9 @@
 name: flutter_ocr_kit
-description: "A Flutter plugin for OCR (Optical Character Recognition) using ONNX model. Recognizes text from images on mobile devices."
-version: 0.0.1
-homepage: https://github.com/example/flutter_ocr_kit
-repository: https://github.com/example/flutter_ocr_kit
-issue_tracker: https://github.com/example/flutter_ocr_kit/issues
+description: "A Flutter FFI plugin for OCR with Edge AI. Uses Apple Vision (iOS) / ML Kit (Android) for text recognition and ONNX Runtime for layout detection."
+version: 1.0.0
+homepage: https://github.com/robert008/flutter_ocr_kit
+repository: https://github.com/robert008/flutter_ocr_kit
+issue_tracker: https://github.com/robert008/flutter_ocr_kit/issues
 
 environment:
   sdk: ^3.7.2
