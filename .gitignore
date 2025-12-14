@@ -51,6 +51,9 @@ release_assets/
 ios/Frameworks/opencv2.framework/
 ios/Frameworks/onnxruntime.xcframework/
 
+# Android native libraries (download from release)
+android/src/main/jniLibs/
+
 # Large model files (download separately)
 models/
 example/assets/*.onnx
