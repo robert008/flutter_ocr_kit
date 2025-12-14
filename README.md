@@ -86,7 +86,7 @@ for (final region in layout.detections) {
 OcrKit.releaseLayout();
 ```
 
-> **Note (iOS)**: Layout detection uses Core ML Execution Provider for faster inference, but consumes more memory (~1.5GB). Always call `OcrKit.releaseLayout()` when you no longer need layout detection to free memory.
+> **Note (iOS)**: Layout detection uses Core ML Execution Provider for faster inference, but consumes more memory (~1.5GB). Always call `OcrKit.releaseLayout()` when you no longer need layout detection to free memory. To disable Core ML and use CPU only (lower memory, slower speed), modify `src/detect/doc_detector.cpp` and rebuild the static library.
 
 Supported layout classes: `Text`, `Title`, `Figure`, `Figure caption`, `Table`, `Table caption`, `Header`, `Footer`, `Reference`, `Equation`
 
