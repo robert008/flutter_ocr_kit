@@ -2,6 +2,24 @@
 
 A Flutter FFI plugin for OCR (Optical Character Recognition) with Edge AI support. Runs AI inference directly on mobile devices using ONNX Runtime and native OCR engines.
 
+## Screenshots
+
+<p align="center">
+  <img src="screenshots/search.png" width="250" alt="Real-time Text Search"/>
+  <img src="screenshots/invoice.png" width="250" alt="Invoice Scanner"/>
+  <img src="screenshots/quotation.png" width="250" alt="Quotation Scanner"/>
+</p>
+
+## Demo Video
+
+[![Demo Video](https://img.youtube.com/vi/s70GC92Ir4Q/maxresdefault.jpg)](https://www.youtube.com/watch?v=s70GC92Ir4Q)
+
+The demo includes 4 examples:
+1. **Real-time text search** - Find specific text strings in camera view
+2. **Real-time KIE** - Extract specific types (dates, phone numbers, amounts)
+3. **Invoice scanner** - Scan Taiwan e-invoices and extract invoice number, date, amount
+4. **Quotation scanner** - Scan custom delivery notes with Layout Detection + OCR to extract items, prices, totals
+
 ## Features
 
 - **Native OCR Engine**: Uses Apple Vision (iOS) and Google ML Kit (Android) for text recognition
