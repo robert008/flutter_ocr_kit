@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'dart:io';
 
 import 'package:ffi/ffi.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import 'flutter_ocr_kit_bindings_generated.dart';
@@ -13,6 +14,33 @@ export 'src/ocr_service.dart';
 export 'src/kie_extractor.dart';
 export 'src/invoice_extractor.dart';
 export 'src/quotation_extractor.dart';
+
+/// Top-level function for compute() - runs Vision OCR in isolate (iOS/macOS)
+Map<String, dynamic> _recognizeVisionInIsolate(Map<String, dynamic> params) {
+  final imagePath = params['imagePath'] as String;
+  final languages = (params['languages'] as List).cast<String>();
+
+  // Load library in isolate
+  final dylib = DynamicLibrary.process();
+  final bindings = OcrKitBindings(dylib);
+
+  final pathPtr = imagePath.toNativeUtf8().cast<Char>();
+  final langStr = languages.join(',');
+  final langPtr = langStr.toNativeUtf8().cast<Char>();
+  Pointer<Char>? resultPtr;
+
+  try {
+    resultPtr = bindings.recognizeTextWithVision(pathPtr, langPtr);
+    final jsonStr = resultPtr.cast<Utf8>().toDartString();
+    return jsonDecode(jsonStr) as Map<String, dynamic>;
+  } finally {
+    calloc.free(pathPtr);
+    calloc.free(langPtr);
+    if (resultPtr != null) {
+      bindings.freeString(resultPtr);
+    }
+  }
+}
 
 /// OCR Kit - Flutter FFI plugin with Core ML / NNAPI acceleration
 ///
@@ -479,6 +507,44 @@ class OcrKit {
       return getVisionSupportedLanguages();
     } else if (Platform.isAndroid) {
       return getMlKitSupportedLanguages();
+    } else {
+      throw UnsupportedError(
+        'Native OCR is not available on ${Platform.operatingSystem}',
+      );
+    }
+  }
+
+  // ========================
+  // Isolate-based OCR API (non-blocking)
+  // ========================
+
+  /// Recognize text using platform-native OCR in a separate isolate
+  ///
+  /// This version runs the OCR in a separate Dart isolate, preventing
+  /// UI jank during recognition. Use this for real-time scanning.
+  ///
+  /// Automatically uses:
+  /// - Apple Vision on iOS/macOS (via compute isolate)
+  /// - Google ML Kit on Android (already async via platform channel)
+  ///
+  /// [imagePath] - Path to image file
+  /// [languages] - List of language codes (e.g., ['zh-Hant', 'zh-Hans', 'en'])
+  ///
+  /// Returns [OcrResult] containing recognized text lines with bounding boxes.
+  static Future<OcrResult> recognizeNativeIsolate(
+    String imagePath, {
+    List<String> languages = const [],
+  }) async {
+    if (Platform.isIOS || Platform.isMacOS) {
+      // Run Vision OCR in isolate to avoid blocking main thread
+      final resultJson = await compute(_recognizeVisionInIsolate, {
+        'imagePath': imagePath,
+        'languages': languages,
+      });
+      return OcrResult.fromJson(resultJson);
+    } else if (Platform.isAndroid) {
+      // ML Kit already uses platform channel (async)
+      return recognizeWithMlKit(imagePath, languages: languages);
     } else {
       throw UnsupportedError(
         'Native OCR is not available on ${Platform.operatingSystem}',

@@ -99,6 +99,15 @@ class TextLine {
     );
   }
 
+  Map<String, dynamic> toJson() => {
+    'x1': x1,
+    'y1': y1,
+    'x2': x2,
+    'y2': y2,
+    'score': score,
+    'text': text,
+  };
+
   @override
   String toString() {
     return 'TextLine("$text": score=${score.toStringAsFixed(3)})';
@@ -189,6 +198,20 @@ class OcrResult {
       imageWidth: json['image_width'] as int,
       imageHeight: json['image_height'] as int,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    if (error != null) {
+      return {'error': error};
+    }
+    return {
+      'results': results.map((r) => r.toJson()).toList(),
+      'words': words.map((w) => w.toJson()).toList(),
+      'count': count,
+      'inference_time_ms': inferenceTimeMs,
+      'image_width': imageWidth,
+      'image_height': imageHeight,
+    };
   }
 
   @override
