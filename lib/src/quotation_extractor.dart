@@ -338,25 +338,27 @@ class QuotationExtractor {
   }
 
   /// Extract table items
+  /// Returns empty list if no table rect is provided (Layout Detection must find table)
   List<QuotationItem> _extractTableItems(List<TextLine> texts, Rect? tableRect) {
+    // When Layout Detection doesn't find a table, skip item extraction
+    if (tableRect == null) {
+      debugPrint('[QuotationExtractor] NO TABLE RECT - skipping item extraction');
+      return [];
+    }
+
     final items = <QuotationItem>[];
 
     // Filter texts within table region (both X and Y must be inside)
-    List<TextLine> tableTexts = texts;
-    if (tableRect != null) {
-      tableTexts = texts.where((t) {
-        final centerX = (t.x1 + t.x2) / 2;
-        final centerY = (t.y1 + t.y2) / 2;
-        return centerX >= tableRect.left && centerX <= tableRect.right &&
-               centerY >= tableRect.top && centerY <= tableRect.bottom;
-      }).toList();
-    }
+    final tableTexts = texts.where((t) {
+      final centerX = (t.x1 + t.x2) / 2;
+      final centerY = (t.y1 + t.y2) / 2;
+      return centerX >= tableRect.left && centerX <= tableRect.right &&
+             centerY >= tableRect.top && centerY <= tableRect.bottom;
+    }).toList();
 
-    // Debug: print table rect and all texts
-    if (tableRect != null) {
-      debugPrint('[QuotationExtractor] Table rect: $tableRect');
-      debugPrint('[QuotationExtractor] Texts in table: ${tableTexts.length}');
-    }
+    // Debug: print table rect and filtering results
+    debugPrint('[QuotationExtractor] Table rect: (${tableRect.left.toInt()},${tableRect.top.toInt()})-(${tableRect.right.toInt()},${tableRect.bottom.toInt()})');
+    debugPrint('[QuotationExtractor] Texts: total=${texts.length}, inTable=${tableTexts.length}, filtered=${texts.length - tableTexts.length}');
 
     // Find product names - they usually contain Chinese + code pattern
     // Pattern: Chinese characters followed by alphanumeric product code (e.g., "電路板 PCB-2024A")
