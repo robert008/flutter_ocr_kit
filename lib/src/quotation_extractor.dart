@@ -398,13 +398,26 @@ class QuotationExtractor {
 
       if (hasChineseAndCode) {
         productTexts.add(text);
-        debugPrint('[QuotationExtractor] Found product: "${text.text}" at y=${text.y1.toInt()}');
+        debugPrint('[QuotationExtractor] Candidate: "${text.text}" at x=${text.x1.toInt()}, y=${text.y1.toInt()}');
       }
+    }
+
+    // Filter out specs by X position
+    // Product names are in the leftmost column, specs are to the right
+    if (productTexts.isNotEmpty) {
+      // Find the minimum X (leftmost column = product name column)
+      final minX = productTexts.map((t) => t.x1).reduce((a, b) => a < b ? a : b);
+      // Keep only items within 100px of the leftmost column (product names)
+      // Items with X > minX + 100 are likely specs in the next column
+      final filtered = productTexts.where((t) => t.x1 < minX + 100).toList();
+      debugPrint('[QuotationExtractor] Filtered by X: ${productTexts.length} -> ${filtered.length} (minX=${minX.toInt()}, threshold=${(minX + 100).toInt()})');
+      productTexts.clear();
+      productTexts.addAll(filtered);
     }
 
     // Sort by Y position
     productTexts.sort((a, b) => a.y1.compareTo(b.y1));
-    debugPrint('[QuotationExtractor] Total products found: ${productTexts.length}');
+    debugPrint('[QuotationExtractor] Total products: ${productTexts.length}');
 
     // For each product, find other texts on the same row
     int itemIndex = 1;
