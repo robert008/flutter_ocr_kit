@@ -2,6 +2,7 @@
 
 // Layout detection functions
 extern void initModel(const char* model_path);
+extern void releaseLayoutModel(void);
 extern char* detectLayout(const char* img_path, float conf_threshold);
 extern void freeString(char* str);
 extern const char* getVersion(void);
@@ -36,6 +37,7 @@ extern char* getVisionSupportedLanguages(void);
     if (version == NULL) {
         // Force link layout detection symbols
         initModel("/nonexistent");
+        releaseLayoutModel();
         detectLayout("/nonexistent", 0.0f);
         freeString(NULL);
 
