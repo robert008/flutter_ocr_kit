@@ -319,4 +319,5 @@ MIT License
 
 ## Related Projects
 
+- [flutter_document_capture](https://github.com/robert008/flutter_document_capture) - Document capture preprocessing (corner detection, perspective correction)
 - [flutter_doclayout_kit](https://github.com/robert008/flutter_doclayout_kit) - Document layout detection plugin
