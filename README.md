@@ -307,6 +307,12 @@ flutter analyze
 ./scripts/build_ios_static.sh
 ```
 
+## Author
+
+**Robert Chuang**
+- Email: figo007007@gmail.com
+- LinkedIn: https://www.linkedin.com/in/robert-chuang-88090932b
+
 ## License
 
 MIT License
